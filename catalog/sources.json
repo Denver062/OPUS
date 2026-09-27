@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": "opus-official",
+      "name": "OPUS Official Apps",
+      "repository": "https://github.com/example/opus-apps",
+      "branch": "main",
+      "catalogPath": "apps",
+      "enabled": true
+    }
+  ]
+}

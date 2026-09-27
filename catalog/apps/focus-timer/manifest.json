@@ -1,0 +1,12 @@
+{
+  "id": "focus-timer",
+  "name": "Focus Timer",
+  "version": "0.9.4",
+  "description": "집중 시간과 휴식 시간을 알려 주는 예시 앱입니다.",
+  "category": "웰빙",
+  "icon": "⏱️",
+  "source": "opus-official",
+  "permissions": ["notifications"],
+  "install": {"kind": "package", "command": "winget install --id Example.FocusTimer --exact"},
+  "uninstall": {"kind": "package", "command": "winget uninstall --id Example.FocusTimer --exact"}
+}
