@@ -15,12 +15,14 @@ Windows 11용 개인/팀 앱 카탈로그, 자동화, 워크스페이스 관리�
 python backend/server.py
 ```
 
-그 뒤 `http://127.0.0.1:47821`을 엽니다. Windows 호스트는 WebView2 SDK를 설치한 개발 환경에서 CMake로 빌드합니다.
+그 뒤 `http://127.0.0.1:47821`을 엽니다. Windows 호스트는 CMake가 WebView2 SDK를 받아 빌드하며, 빌드 결과물 옆에 웹 UI와 로컬 API를 자동 복사합니다.
 
 ```powershell
 cmake -S native -B build
 cmake --build build --config Release
 ```
+
+실행 파일은 Microsoft Edge WebView2 Evergreen Runtime과 `python.exe`가 필요합니다.
 
 ## 카탈로그 형식
 
