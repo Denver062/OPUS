@@ -1,10 +1,6 @@
-#define COBJMACROS
-#define UNICODE
-#define _UNICODE
 #include <windows.h>
 #include <dwmapi.h>
 #include <WebView2.h>
-#include <WebView2Loader.h>
 
 /*
   The UI and controller bind to 127.0.0.1 only. WebView2 is loaded from the
