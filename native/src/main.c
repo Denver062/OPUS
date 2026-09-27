@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <dwmapi.h>
+#include <strsafe.h>
 #include <WebView2.h>
 
 /*
@@ -74,7 +75,7 @@ static HRESULT STDMETHODCALLTYPE controller_invoke(
   }
   return S_OK;
 }
-static const ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl CONTROLLER_VTBL = {
+static ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl CONTROLLER_VTBL = {
   controller_query,
   (ULONG (STDMETHODCALLTYPE *)(ICoreWebView2CreateCoreWebView2ControllerCompletedHandler *))add_ref,
   (ULONG (STDMETHODCALLTYPE *)(ICoreWebView2CreateCoreWebView2ControllerCompletedHandler *))release,
@@ -91,7 +92,7 @@ static HRESULT STDMETHODCALLTYPE environment_invoke(
   next->iface.lpVtbl = &CONTROLLER_VTBL; next->references = 1; next->hwnd = handler->hwnd;
   return ICoreWebView2Environment_CreateCoreWebView2Controller(environment, handler->hwnd, &next->iface);
 }
-static const ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl ENVIRONMENT_VTBL = {
+static ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl ENVIRONMENT_VTBL = {
   environment_query,
   (ULONG (STDMETHODCALLTYPE *)(ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler *))add_ref,
   (ULONG (STDMETHODCALLTYPE *)(ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler *))release,
@@ -102,7 +103,7 @@ static BOOL start_backend(void) {
   wchar_t module[MAX_PATH], command[MAX_PATH * 2];
   GetModuleFileNameW(NULL, module, MAX_PATH);
   wchar_t *last = wcsrchr(module, L'\\'); if (!last) return FALSE; *last = L'\0';
-  swprintf(command, MAX_PATH * 2, L"python.exe \"%s\\backend\\server.py\"", module);
+  if (FAILED(StringCchPrintfW(command, MAX_PATH * 2, L"python.exe \"%s\\backend\\server.py\"", module))) return FALSE;
   STARTUPINFOW startup; ZeroMemory(&startup, sizeof(startup));
   startup.cb = sizeof(startup); startup.dwFlags = STARTF_USESHOWWINDOW; startup.wShowWindow = SW_HIDE;
   return CreateProcessW(NULL, command, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, module, &startup, &backend_process);
