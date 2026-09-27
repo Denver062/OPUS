@@ -112,7 +112,11 @@ static void start_webview(HWND hwnd) {
   EnvironmentHandler *handler = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*handler));
   if (!handler) return;
   handler->iface.lpVtbl = &ENVIRONMENT_VTBL; handler->references = 1; handler->hwnd = hwnd;
-  CreateCoreWebView2EnvironmentWithOptions(NULL, NULL, NULL, &handler->iface);
+  HRESULT result = CreateCoreWebView2EnvironmentWithOptions(NULL, NULL, NULL, &handler->iface);
+  if (FAILED(result)) {
+    HeapFree(GetProcessHeap(), 0, handler);
+    MessageBoxW(hwnd, L"WebView2를 시작하지 못했습니다. Microsoft Edge WebView2 Runtime을 확인해 주세요.", L"OPUS", MB_ICONERROR);
+  }
 }
 
 static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
@@ -132,6 +136,8 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR command, int show) {
   (void)previous; (void)command;
+  HRESULT com_result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+  if (FAILED(com_result)) { MessageBoxW(NULL, L"COM을 초기화하지 못했습니다.", L"OPUS", MB_ICONERROR); return 1; }
   const wchar_t class_name[] = L"OPUS.Window";
   WNDCLASSW klass = {0}; klass.hInstance = instance; klass.lpszClassName = class_name; klass.lpfnWndProc = WindowProc; klass.hCursor = LoadCursor(NULL, IDC_ARROW);
   RegisterClassW(&klass);
@@ -142,5 +148,6 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR command, int s
   DwmSetWindowAttribute(hwnd, 35 /* DWMWA_CAPTION_COLOR */, &background, sizeof(background));
   ShowWindow(hwnd, show);
   MSG message; while (GetMessageW(&message, NULL, 0, 0) > 0) { TranslateMessage(&message); DispatchMessageW(&message); }
+  CoUninitialize();
   return 0;
 }
