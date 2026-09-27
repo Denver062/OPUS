@@ -6,7 +6,8 @@
   "category": "웰빙",
   "icon": "⏱️",
   "source": "opus-official",
+  "wingetId": "Microsoft.VisualStudioCode",
   "permissions": ["notifications"],
-  "install": {"kind": "package", "command": "winget install --id Example.FocusTimer --exact"},
-  "uninstall": {"kind": "package", "command": "winget uninstall --id Example.FocusTimer --exact"}
+  "install": {"kind": "winget"},
+  "uninstall": {"kind": "winget"}
 }

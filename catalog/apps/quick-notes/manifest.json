@@ -6,7 +6,8 @@
   "category": "생산성",
   "icon": "📝",
   "source": "opus-official",
+  "wingetId": "Microsoft.PowerToys",
   "permissions": ["clipboard", "notifications"],
-  "install": {"kind": "package", "command": "winget install --id Example.QuickNotes --exact"},
-  "uninstall": {"kind": "package", "command": "winget uninstall --id Example.QuickNotes --exact"}
+  "install": {"kind": "winget"},
+  "uninstall": {"kind": "winget"}
 }
